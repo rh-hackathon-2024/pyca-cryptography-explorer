@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  cbom-scan:
+    runs-on: ubuntu-latest
+    name: CBOM generation
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Create CBOM
+        uses: PQCA/cbomkit-action@v2.0.0
+        id: cbom
+      # Allow you to persist CBOM after a job has completed, and share 
+      # that CBOM with another job in the same workflow.
+      - name: Commit changes to new branch
+        uses: actions/upload-artifact@v4
+        with: 
+          name: "CBOM"
+          path: ${{ steps.cbom.outputs.pattern }}
+          if-no-files-found: warn 
