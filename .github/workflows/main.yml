@@ -18,6 +18,8 @@ jobs:
       - name: Create CBOM
         uses: PQCA/cbomkit-action@v2.0.0
         id: cbom
+        env:
+          CBOMKIT_LANGUAGES: java
       # Allow you to persist CBOM after a job has completed, and share 
       # that CBOM with another job in the same workflow.
       - name: Commit changes to new branch
